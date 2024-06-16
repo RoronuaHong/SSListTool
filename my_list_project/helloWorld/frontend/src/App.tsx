@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Space, Switch, Table } from 'antd';
-import type { TableColumnsType, TableProps } from 'antd';
+import type { GetProp, TableColumnsType, TableProps } from 'antd';
 import RoleModal from './components/RoleModal'
 // import DemoForm from './components/DemoForm'
 
 // type TableRowSelection<T> = TableProps<T>['rowSelection'];
+
+type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
+}
 
 interface DataType {
   key: React.ReactNode;
@@ -97,6 +106,14 @@ const App: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+      total: 200,
+    },
+  });
+
   const handleAdd = (role: any) => {
     setOpen(true);
     setIsEdit(false);
@@ -145,13 +162,13 @@ const App: React.FC = () => {
       dataIndex: 'action',
       width: '30%',
       key: 'action',
-      render: () => (
+      render: (text: string, record: DataType) => (
         <Space size="middle">
-          <a onClick={role => handleAdd(role)}>新增</a> 
-          <a onClick={role => handleEdit(role)}>编辑</a>
-          <a onClick={role => handleDel(role)}>删除</a>
-          <a onClick={role => handleRole(role)}>角色授权</a>
-          <a onClick={role => handleCheck(role)}>查看</a>
+          <a onClick={() => handleAdd(record)}>新增</a> 
+          <a onClick={() => handleEdit(record)}>编辑</a>
+          <a onClick={() => handleDel(record)}>删除</a>
+          <a onClick={() => handleRole(record)}>角色授权</a>
+          <a onClick={() => handleCheck(record)}>查看</a>
         </Space>
       )
     },
@@ -161,6 +178,7 @@ const App: React.FC = () => {
     <>
       <Table
         columns={columns}
+        pagination={tableParams.pagination}
         // rowSelection={{ ...rowSelection, checkStrictly }}
         dataSource={myData}
       />
