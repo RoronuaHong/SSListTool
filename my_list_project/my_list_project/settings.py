@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from helloWorld.mymid.md1 import Md1
 
@@ -38,18 +39,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'helloWorld.apps.HelloworldConfig'
+    'helloWorld.apps.HelloworldConfig',
+    'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'helloWorld.mymid.md1.Md1'
+    'helloWorld.mymid.md1.Md1',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'my_list_project.urls'
@@ -57,7 +61,9 @@ ROOT_URLCONF = 'my_list_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+        #   os.path.join(BASE_DIR, 'frontend/build')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,7 +137,20 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'helloWorld/frontend/build/static')
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_NAME = "csrftoken"
+CORS_ALLOWED_ORIGINS = ('http://localhost:3000', 'http://127.0.0.1:3000')
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+]
