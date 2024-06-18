@@ -17,7 +17,7 @@
 
 from django.shortcuts import render
 from django.views.generic import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 
 class IndexView(View):
@@ -29,3 +29,13 @@ class IndexView(View):
         data = {"message": "Hello from Django!"}
         print(data)
         return JsonResponse(data)
+    
+
+def index(req):
+    return render(req, 'http.html')
+
+# get请求测试
+def get_test(req):
+    print(req.method)
+
+    return HttpResponse('http get ok')
