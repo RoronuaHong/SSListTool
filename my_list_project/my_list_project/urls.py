@@ -34,5 +34,6 @@ urlpatterns = [
     # namespace
     # path('user/', include('user.urls', 'user'), namespace='user'),
     # path('list/', helloWorld.views.IndexView.as_view(), name="index"),
-    path('get', helloWorld.views.get_test)
+    path('get', helloWorld.views.get_test),
+    path('post', helloWorld.views.post_test)
 ]

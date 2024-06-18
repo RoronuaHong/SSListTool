@@ -31,6 +31,7 @@ class IndexView(View):
         return JsonResponse(data)
     
 
+# django 5默认模板
 def index(req):
     return render(req, 'http.html')
 
@@ -38,4 +39,16 @@ def index(req):
 def get_test(req):
     print(req.method)
 
+    print(req.GET.get('name'))
+    print(req.GET.get('pwd'))
+
     return HttpResponse('http get ok')
+
+# get请求测试
+def post_test(req):
+    print(req.method)
+
+    print(req.POST.get('name'))
+    print(req.POST.get('pwd'))
+
+    return HttpResponse('http post ok')
